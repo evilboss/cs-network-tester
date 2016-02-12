@@ -21,3 +21,5 @@ insecure                # Allow all DB writes from clients (for prototyping)
 iron:router
 fourseven:scss@2.0.0
 materialize:materialize
+browser-policy          # Configure security policies enforced by the browser
+http                    # Make HTTP calls to remote servers
