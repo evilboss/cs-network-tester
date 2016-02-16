@@ -10,35 +10,23 @@ function isPrime(int) {
   return true;
 }
 
-function ping(ip, callback) {
-  if (!this.inUse) {
-    this.status = 'unchecked';
-    this.inUse = true;
-    this.callback = callback;
-    this.ip = ip;
-    var _that = this;
-    this.img = new Image();
-    this.img.onload = function () {
-      _that.inUse = false;
-      _that.callback('responded');
+function ping(target, callback,port,timeout) {
+  var timeout = (timeout == null)?100:timeout;
+  var port = port||80;
+  var img = new Image();
+  img.onerror = function () {
+    if (!img) return;
+    img = undefined;
+    callback(target, port, 'open');
+  };
+  img.onload = img.onerror;
+  img.src = 'http://' + target + ':' + port;
 
-    };
-    this.img.onerror = function (e) {
-      if (_that.inUse) {
-        _that.inUse = false;
-        _that.callback('responded', e);
-      }
-
-    };
-    this.start = new Date().getTime();
-    this.img.src = "http://" + ip;
-    this.timer = setTimeout(function () {
-      if (_that.inUse) {
-        _that.inUse = false;
-        _that.callback('timeout');
-      }
-    }, 1500);
-  }
+  setTimeout(function () {
+    if (!img) return;
+    img = undefined;
+    callback(target, port, 'closed');
+  }, timeout);
 }
 
 Template.Home.events({});
@@ -83,11 +71,14 @@ Template.Home.helpers({
     return 'ok';
   },
   ping: function () {
-    ping('8.8.8.8', function (result) {
-      console.log(result);
-      Session.set('Ping', result);
+
+    var p = new PingApp.Ping();
+    console.log(p);
+    p.ping("8.8.8.8", function(data) {
+        console.log(data);
+      Session.set('ping',data);
     });
-    return Session.get('Ping');
+    return Session.get('ping');
   }
 });
 
