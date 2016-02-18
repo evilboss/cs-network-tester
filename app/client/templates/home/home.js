@@ -10,9 +10,9 @@ function isPrime(int) {
   return true;
 }
 
-function ping(target, callback,port,timeout) {
-  var timeout = (timeout == null)?100:timeout;
-  var port = port||80;
+function ping(target, callback, port, timeout) {
+  var timeout = (timeout == null) ? 100 : timeout;
+  var port = port || 80;
   var img = new Image();
   img.onerror = function () {
     if (!img) return;
@@ -52,9 +52,10 @@ Template.Home.helpers({
   },
   getRequest: function () {
     $.ajax({
-      url: 'http://toolbox.cloudstaff.com/~noc-display/test.txt',
+      url: 'https://toolbox.cloudstaff.com/~noc-display/test.txt',
       type: 'GET',
       success: function (data) {
+        Session.set('Status', data);
       },
       error: function (err) {
         Session.set('Status', err.statusText);
@@ -64,19 +65,21 @@ Template.Home.helpers({
 
   },
   dns: function () {
-    Meteor.startup(function () {
-      console.log(cordova);
+    var p = new PingApp.Ping();
+    console.log(p);
+    p.ping("cloudstaff.com", function (data) {
+      console.log(data);
+      Session.set('dns', data);
     });
-
-    return 'ok';
+    return Session.get('dns');
   },
   ping: function () {
 
     var p = new PingApp.Ping();
     console.log(p);
-    p.ping("8.8.8.8", function(data) {
-        console.log(data);
-      Session.set('ping',data);
+    p.ping("8.8.8.8", function (data) {
+      console.log(data);
+      Session.set('ping', data);
     });
     return Session.get('ping');
   }

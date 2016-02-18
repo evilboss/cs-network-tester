@@ -23,4 +23,6 @@ fourseven:scss@2.0.0
 materialize:materialize
 browser-policy          # Configure security policies enforced by the browser
 http                    # Make HTTP calls to remote servers
+fortawesome:fontawesome
+#local packages
 evilboss:ping

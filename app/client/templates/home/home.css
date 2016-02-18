@@ -3,3 +3,23 @@
 /*****************************************************************************/
 .home {
 }
+
+@-webkit-keyframes colors {
+  from {
+    box-shadow: 0 0 0 1px blue;
+  }
+  to {
+    box-shadow: 0 0 0 10px blue;
+  }
+}
+
+.glow {
+ -webkit-animation: colors 1.2s ease-out infinite;
+}
+
+.circle {
+  border-radius: 50%;
+  background-color: red;
+  padding: 20px;
+  width: 5px;
+}
