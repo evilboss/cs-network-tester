@@ -29,7 +29,11 @@ function ping(target, callback, port, timeout) {
   }, timeout);
 }
 
-Template.Home.events({});
+Template.Home.events({
+  'click #exit-app': function () {
+    navigator.app.exitApp();
+  }
+});
 
 /*****************************************************************************/
 /* Home: Helpers */
@@ -50,10 +54,21 @@ Template.Home.helpers({
       return navigator.connection.type;
     }
   },
+  networkResult: function () {
+    var connectionType = Session.get('connection');
+    if (connectionType === 'wifi') {
+      return 'led-green'
+    }
+    if (connectionType === '3g') {
+      return 'led-blue'
+    }
+    return 'led-red';
+  },
   getRequest: function () {
     if (Session.get('connection') == 'none') {
       return 'Not Connected';
     }
+    $.support.cors = true;
     $.ajax({
       url: 'https://toolbox.cloudstaff.com/~noc-display/test.txt',
       type: 'GET',
@@ -65,19 +80,32 @@ Template.Home.helpers({
       }
     });
     return Session.get('Status');
-
+  },
+  httpStatus:function(){
+    if(!Session.get('Status')){
+      return 'led-red';
+    }
+    return 'led-green';
   },
   dns: function () {
     if (Session.get('connection') == 'none') {
       return 'Not Connected';
     }
     var p = new PingApp.Ping();
-    p.ping("cloudstaff.com", function (data) {
+    p.ping('cloudstaff.com', function (data) {
       Session.set('dns', data);
     });
     if (Session.get('dns')) {
-      return Session.get('dns') + ' ms';
+      return Spacebars.SafeString('<strong class="green-text">Success</strong>');
     }
+    return Spacebars.SafeString(' <strong class="red-text text-darken-4">Failed</strong>');
+
+  },
+  dnsResult: function () {
+    if (Session.get('dns')) {
+      return 'led-green'
+    }
+    return 'led-red';
 
   },
   ping: function () {
@@ -85,12 +113,44 @@ Template.Home.helpers({
       return 'Not Connected';
     }
     var p = new PingApp.Ping();
-    p.ping("8.8.8.8", function (data) {
+    p.ping('8.8.8.8', function (data) {
       Session.set('ping', data);
     });
     if (Session.get('ping')) {
-      return Session.get('ping') + ' ms';
+      var pingResult = parseInt(Session.get('ping'));
+      if (pingResult < 100) {
+        return Spacebars.SafeString(' <strong class="green-text">Very Fast</strong>');
+      }
+      if (pingResult < 200) {
+        return Spacebars.SafeString(' <strong class="blue-text">Fast</strong>');
+      }
+      if (pingResult < 500) {
+        return Spacebars.SafeString('<strong class="yellow-text text-darken-3">Slow</strong>');
+      }
+      return Spacebars.SafeString('<strong class="red-text text-darken-4">Very Slow</strong>');
     }
+    return Spacebars.SafeString(' <strong class="red-text text-darken-4">Error</strong>');
+
+
+  },
+  pingResult: function () {
+   if (Session.get('ping')) {
+     var pingResult = parseInt(Session.get('ping'));
+     if (pingResult < 100) {
+       return 'led-green';
+     }
+     if (pingResult < 200) {
+       return 'led-blue';
+     }
+     if (pingResult < 500) {
+       return 'led-yellow';
+     }
+     return 'led-red';
+   }
+    return 'led-red';
+
+
+
 
   }
 });

@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 cd app
-meteor run android
+meteor run android-device

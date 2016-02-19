@@ -5,14 +5,12 @@
       <div class="row">
         <div class="col s10">
           <h5>Internet Connectivity</h5>
-          <p>{{networkInfo}}
-            <strong class="green-text">Very Fast</strong>
-          </p>
+          <p>Connection TYPE: {{networkInfo}}</p>
 
         </div>
         <div class="col s2">
           <div class="led-box">
-            <div class="led-green"></div>
+            <div class="{{networkResult}}"></div>
           </div>
         </div>
       </div>
@@ -22,14 +20,12 @@
       <div class="row">
         <div class="col s10">
           <h5>NS Lookup</h5>
-          <p>{{dns}}
-            <strong class="yellow-text text-darken-3">Fast</strong>
-          </p>
+          {{{dns}}}
         </div>
         <div class="col s2">
-          <div class="led-box">
-            <div class="led-yellow"></div>
-          </div>
+           <div class="led-box">
+             <div class="{{dnsResult}}"></div>
+           </div>
         </div>
       </div>
     </div>
@@ -39,14 +35,12 @@
         <div class="col s10">
           <h5>Ping</h5>
           <p>{{ping}}
-            <strong class="red-text text-darken-4">Slow</strong>
-
           </p>
         </div>
         <div class="col s2">
-          <div class="led-box">
-            <div class="led-red"></div>
-          </div>
+         <div class="led-box">
+             <div class="{{pingResult}}"></div>
+           </div>
         </div>
       </div>
     </div>
@@ -55,15 +49,21 @@
       <div class="row">
         <div class="col s10">
           <h5>HTTP</h5>
-
-          <p>{{getRequest}}
-          </p>
+          <p>{{getRequest}}</p>
         </div>
         <div class="col s2">
           <div class="led-box">
-            <div class="led-blue"></div>
+            <div class="{{httpStatus}}"></div>
           </div>
 
+        </div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="section">
+      <div class="row">
+        <div class="col s12">
+          <button id="exit-app" class="waves-effect blue waves-lighten-2 btn-large col s12">OK</button>
         </div>
       </div>
     </div>
