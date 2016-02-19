@@ -46,11 +46,14 @@ function reachableCallback(reachability) {
 Template.Home.helpers({
   networkInfo: function () {
     if (Meteor.isCordova) {
-      console.log(navigator.connection.type);
+      Session.set('connection', navigator.connection.type);
       return navigator.connection.type;
     }
   },
   getRequest: function () {
+    if (Session.get('connection') == 'none') {
+      return 'Not Connected';
+    }
     $.ajax({
       url: 'https://toolbox.cloudstaff.com/~noc-display/test.txt',
       type: 'GET',
@@ -65,23 +68,30 @@ Template.Home.helpers({
 
   },
   dns: function () {
+    if (Session.get('connection') == 'none') {
+      return 'Not Connected';
+    }
     var p = new PingApp.Ping();
-    console.log(p);
     p.ping("cloudstaff.com", function (data) {
-      console.log(data);
       Session.set('dns', data);
     });
-    return Session.get('dns');
+    if (Session.get('dns')) {
+      return Session.get('dns') + ' ms';
+    }
+
   },
   ping: function () {
-
+    if (Session.get('connection') == 'none') {
+      return 'Not Connected';
+    }
     var p = new PingApp.Ping();
-    console.log(p);
     p.ping("8.8.8.8", function (data) {
-      console.log(data);
       Session.set('ping', data);
     });
-    return Session.get('ping');
+    if (Session.get('ping')) {
+      return Session.get('ping') + ' ms';
+    }
+
   }
 });
 
