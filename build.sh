@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 cd app
-meteor build ../build/production/android/ --server=meteor.local
+meteor build ../build/production/ --server=meteor.local

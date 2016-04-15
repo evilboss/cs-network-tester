@@ -24,6 +24,10 @@ materialize:materialize
 browser-policy          # Configure security policies enforced by the browser
 http                    # Make HTTP calls to remote servers
 fortawesome:fontawesome
+practicalmeteor:faker   # faker.js packaged for Meteor. Generate massive amounts of fake data
 
 #local packages
 evilboss:ping
+hybrid:assets
+
+

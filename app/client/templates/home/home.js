@@ -1,34 +1,6 @@
 /*****************************************************************************/
 /* Home: Event Handlers */
 /*****************************************************************************/
-function isPrime(int) {
-  for (var i = 2; i > int; i++) {
-    if (int % i === 0) {
-      return false;
-    }
-  }
-  return true;
-}
-
-function ping(target, callback, port, timeout) {
-  var timeout = (timeout == null) ? 100 : timeout;
-  var port = port || 80;
-  var img = new Image();
-  img.onerror = function () {
-    if (!img) return;
-    img = undefined;
-    callback(target, port, 'open');
-  };
-  img.onload = img.onerror;
-  img.src = 'http://' + target + ':' + port;
-
-  setTimeout(function () {
-    if (!img) return;
-    img = undefined;
-    callback(target, port, 'closed');
-  }, timeout);
-}
-
 Template.Home.events({
   'click #exit-app': function () {
     navigator.app.exitApp();
@@ -59,8 +31,11 @@ Template.Home.helpers({
     if (connectionType === 'wifi') {
       return 'led-green'
     }
-    if (connectionType === '3g') {
+    if (connectionType === '4g') {
       return 'led-blue'
+    }
+    if (connectionType === '3g') {
+      return 'led-yellow'
     }
     return 'led-red';
   },
@@ -68,21 +43,20 @@ Template.Home.helpers({
     if (Session.get('connection') == 'none') {
       return 'Not Connected';
     }
-    $.support.cors = true;
-    $.ajax({
-      url: 'https://toolbox.cloudstaff.com/~noc-display/test.txt',
-      type: 'GET',
-      success: function (data) {
-        Session.set('Status', data);
-      },
-      error: function (err) {
-        Session.set('Status', err.statusText);
+    var url = "https://toolbox.cloudstaff.com/~noc-display/test.txt";
+    HTTP.get(url, {}, function (err, result) {
+      if(result){
+        if(result.content){
+          Session.set('Status',result.content);
+        }
       }
+      console.log(err, result.content);
     });
+
     return Session.get('Status');
   },
-  httpStatus:function(){
-    if(!Session.get('Status')){
+  httpStatus: function () {
+    if (!Session.get('Status')) {
       return 'led-red';
     }
     return 'led-green';
@@ -91,8 +65,8 @@ Template.Home.helpers({
     if (Session.get('connection') == 'none') {
       return 'Not Connected';
     }
-    var p = new PingApp.Ping();
-    p.ping('cloudstaff.com', function (data) {
+    var dnsping = new PingApp.Ping();
+    dnsping.ping('http://' + faker.random.uuid() + '.cloudstaff.io', function (data) {
       Session.set('dns', data);
     });
     if (Session.get('dns')) {
@@ -112,8 +86,9 @@ Template.Home.helpers({
     if (Session.get('connection') == 'none') {
       return 'Not Connected';
     }
-    var p = new PingApp.Ping();
-    p.ping('8.8.8.8', function (data) {
+    var pinger = new PingApp.Ping();
+    console.log(pinger);
+    pinger.ping('8.8.8.8', function (data) {
       Session.set('ping', data);
     });
     if (Session.get('ping')) {
@@ -134,22 +109,20 @@ Template.Home.helpers({
 
   },
   pingResult: function () {
-   if (Session.get('ping')) {
-     var pingResult = parseInt(Session.get('ping'));
-     if (pingResult < 100) {
-       return 'led-green';
-     }
-     if (pingResult < 200) {
-       return 'led-blue';
-     }
-     if (pingResult < 500) {
-       return 'led-yellow';
-     }
-     return 'led-red';
-   }
+    if (Session.get('ping')) {
+      var pingResult = parseInt(Session.get('ping'));
+      if (pingResult < 100) {
+        return 'led-green';
+      }
+      if (pingResult < 200) {
+        return 'led-blue';
+      }
+      if (pingResult < 500) {
+        return 'led-yellow';
+      }
+      return 'led-red';
+    }
     return 'led-red';
-
-
 
 
   }
@@ -159,9 +132,13 @@ Template.Home.helpers({
 /* Home: Lifecycle Hooks */
 /*****************************************************************************/
 Template.Home.created = function () {
+
+
 };
 
+
 Template.Home.rendered = function () {
+  $('.modal-trigger').leanModal();
 };
 
 Template.Home.destroyed = function () {

@@ -1,54 +1,66 @@
 <template name="Home">
   <div class="container">
     <div class="divider"></div>
-    <div class="section">
-      <div class="row">
-        <div class="col s10">
-          <h5>Internet Connectivity</h5>
-          <p>Connection TYPE: {{networkInfo}}</p>
+    <a class="modal-trigger" href="#modal1">
+      <div class="section">
+        <div class="row">
+          <div class="col s10">
+            <h5>Internet Connectivity</h5>
 
-        </div>
-        <div class="col s2">
-          <div class="led-box">
-            <div class="{{networkResult}}"></div>
+            <p>Connection TYPE: {{networkInfo}}</p>
+
+          </div>
+          <div class="col s2">
+            <div class="led-box">
+              <div class="{{networkResult}}"></div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </a>
+
     <div class="divider"></div>
-    <div class="section">
-      <div class="row">
-        <div class="col s10">
-          <h5>NS Lookup</h5>
-          {{{dns}}}
-        </div>
-        <div class="col s2">
-           <div class="led-box">
-             <div class="{{dnsResult}}"></div>
-           </div>
+    <a class="modal-trigger" href="#modal1">
+      <div class="section">
+        <div class="row">
+          <div class="col s10">
+            <h5>NS Lookup</h5>
+            {{{dns}}}
+          </div>
+          <div class="col s2">
+            <div class="led-box">
+              <div class="{{dnsResult}}"></div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </a>
+
     <div class="divider"></div>
+    <a class="modal-trigger" href="#modal1">
     <div class="section">
       <div class="row">
         <div class="col s10">
           <h5>Ping</h5>
+
           <p>{{ping}}
           </p>
         </div>
         <div class="col s2">
-         <div class="led-box">
-             <div class="{{pingResult}}"></div>
-           </div>
+          <div class="led-box">
+            <div class="{{pingResult}}"></div>
+          </div>
         </div>
       </div>
     </div>
+      </a>
     <div class="divider"></div>
+    <a class="modal-trigger" href="#modal1">
     <div class="section">
       <div class="row">
         <div class="col s10">
           <h5>HTTP</h5>
+
           <p>{{getRequest}}</p>
         </div>
         <div class="col s2">
@@ -59,6 +71,7 @@
         </div>
       </div>
     </div>
+      </a>
     <div class="divider"></div>
     <div class="section">
       <div class="row">
@@ -69,4 +82,52 @@
     </div>
 
   </div>
+
+  <!-- Modal Trigger -->
+
+  <!-- Modal Structure -->
+  <div id="modal1" class="modal bottom-sheet">
+    <div class="modal-content">
+      <h4>Modal Header</h4>
+      <ul class="collection">
+        <li class="collection-item avatar">
+          <img src="images/yuna.jpg" alt="" class="circle">
+          <span class="title">Title</span>
+
+          <p>First Line <br>
+            Second Line
+          </p>
+          <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+        </li>
+        <li class="collection-item avatar">
+          <i class="material-icons circle">folder</i>
+          <span class="title">Title</span>
+
+          <p>First Line <br>
+            Second Line
+          </p>
+          <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+        </li>
+        <li class="collection-item avatar">
+          <i class="material-icons circle green">assessment</i>
+          <span class="title">Title</span>
+
+          <p>First Line <br>
+            Second Line
+          </p>
+          <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+        </li>
+        <li class="collection-item avatar">
+          <i class="material-icons circle red">play_arrow</i>
+          <span class="title">Title</span>
+
+          <p>First Line <br>
+            Second Line
+          </p>
+          <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
 </template>

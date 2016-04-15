@@ -1,0 +1,7 @@
+{
+    "appIcons": {
+        "source": "private/NetworkTester-Icon.png",
+        "output": "resources/icons/",
+        "type": ["android"]
+    }
+}

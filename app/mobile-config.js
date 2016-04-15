@@ -8,6 +8,10 @@ App.info({
 });
 App.accessRule('http://meteor.local');
 App.accessRule('*');
+App.accessRule('https://cloudstaff.com');
+App.accessRule('http://google.com');
+App.accessRule('http://cloudstaff.io');
+App.accessRule('https://toolbox.cloudstaff.com');
 
 App.icons({
   // Android
